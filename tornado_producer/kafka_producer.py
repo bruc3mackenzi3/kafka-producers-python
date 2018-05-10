@@ -112,7 +112,7 @@ class KafkaProducer:
 		serialized_record = None
 		try:
 			serialized_record = self.serializers[log_type].kafka_avro_encode(record_dict)
-		except (UnicodeDecodeError, ValueError) as e:
+		except (Exception) as e:
 			self.logger.log('WARN', '{} while serializing kafka topic {}: {}'.format(type(e).__name__, log_type, e))
 
 		# Now push serialized data onto queue to be asynchronously produced
