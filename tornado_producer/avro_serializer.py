@@ -29,7 +29,11 @@ class AvroMessageSerializer(object):
 			schema_tuple = self.schema_registry_client.get_latest_schema(subject=self.schema_subject)
 		except ValueError as e:
 			raise ValueError('Schema subject ' + self.schema_subject + ' not found')
-		self.schema_id = schema_tuple[0]
+		
+                if not schema_tuple[1]:
+                        raise ValueError('Schema subject ' + self.schema_subject + ' not found')
+                
+                self.schema_id = schema_tuple[0]
 		self.avro_schema = schema_tuple[1].to_json()
 		self.schema_version = schema_tuple[2]
 
