@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 # install
 setup(
     name='kafka_producers',
-    version='1.0',
+    version='1.1',
     install_requires=requirements,
     packages=[
         'tornado_producer'
