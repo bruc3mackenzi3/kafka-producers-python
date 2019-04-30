@@ -23,9 +23,9 @@ MAX_TIMEOUT = timedelta(seconds=1)
 
 class KafkaProducer:
 
-    def __init__(self, logger, config_url, client_id):
+    def __init__(self, logger, config_filepath, client_id):
         self.logger = logger
-        self.config_url = config_url
+        self.config_filepath = config_filepath
         self.client_id = client_id
 
         self.fatal_errors = [confluent_kafka.KafkaError._ALL_BROKERS_DOWN]
@@ -54,7 +54,7 @@ class KafkaProducer:
         self.logger.log('INFO', 'Successfully Initialized Kafka Producer')
 
     def _init_config(self):
-        self.prod_config = ProducerConfig.get_instance(self.config_url)
+        self.prod_config = ProducerConfig.get_instance(self.config_filepath)
 
         # Load Kafka config
         self.prod_config.confluent_kafka_config['client.id'] = self.client_id
