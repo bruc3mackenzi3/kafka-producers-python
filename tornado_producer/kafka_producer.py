@@ -54,7 +54,7 @@ class KafkaProducer:
         self.logger.log('INFO', 'Successfully Initialized Kafka Producer')
 
     def _init_config(self):
-        self.prod_config = ProducerConfig.get_instance(self.config_filepath)
+        self.prod_config = ProducerConfig(self.config_filepath)
 
         # Load Kafka config
         self.prod_config.confluent_kafka_config['client.id'] = self.client_id
