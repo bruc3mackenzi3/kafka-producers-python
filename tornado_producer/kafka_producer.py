@@ -93,11 +93,11 @@ class KafkaProducer:
 
         self._init_serializers(False)
 
-    def produce_record(self, log_type, record_dict, record_json_str):
+    def produce_record(self, log_type, record_dict, record_json_str=None):
         '''
         Called per request processed, attempt to serialize the record and produce
-        to the Avro topic.  If serialization fails the record_json_str is
-        produced to the raw topic.
+        to the Avro topic.  If serialization fails and record_json_str is
+        provided it's produced to the raw topic.
         '''
 
         if self.prod_config.global_stop:
@@ -120,10 +120,13 @@ class KafkaProducer:
                 self.logger.log('INFO', 'Produced serialized avro record, Topic: {} Record: {}'.format(self.prod_config.topics[log_type]['avro_topic'], record_json_str))
         # If serialization failed use raw JSON string and produce to raw
         # topic
-        else:
+        elif record_json_str == None:
             self.producer.produce(self.prod_config.topics[log_type]['raw_topic'], record_json_str, callback=self._on_delivery_callback)
             if self.logger.isEnabledFor('INFO'):
                 self.logger.log('INFO', 'Produced raw JSON record, Topic: {} Record: {}'.format(self.prod_config.topics[log_type]['raw_topic'], record_json_str))
+        else:
+            if self.logger.isEnabledFor('INFO'):
+                self.logger.log('INFO', 'No raw topic string provided, not producing to raw topic')
 
     @tornado.gen.coroutine
     def poll(self):
