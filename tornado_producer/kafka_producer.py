@@ -44,7 +44,7 @@ class KafkaProducer:
         io_loop.add_callback(self.poll)
 
         # Add schema update to Tornado Periodic Callback
-        self.update_interval = 1*60*1000
+        self.update_interval = 60*60*1000
         tornado_callback = tornado.ioloop.PeriodicCallback(
                     self.load_data,
                     self.update_interval,
