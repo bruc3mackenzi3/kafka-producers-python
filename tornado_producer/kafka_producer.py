@@ -58,6 +58,9 @@ class KafkaProducer:
 
         # Load Kafka config
         self.prod_config.confluent_kafka_config['client.id'] = self.client_id
+        self.prod_config.confluent_kafka_config['group.id'] = \
+                self.prod_config.confluent_kafka_config['group.id'].format(SERVER_ID=self.client_id)
+
         self.prod_config.confluent_kafka_config['on_delivery'] = self._on_delivery_callback
         self.prod_config.confluent_kafka_config['error_cb'] = self._error_callback
 
